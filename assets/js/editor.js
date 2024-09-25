@@ -1,8 +1,6 @@
 // TODO: Create save button which saves the current board to local storage
 
 const boardArea = document.getElementById('board-area');
-const addWhiteBtn = document.getElementById('add-white');
-const addBlackBtn = document.getElementById('add-black');
 const clearBoardBtn = document.getElementById('clear-board');
 const homeBtn = document.getElementById('home-button');
 const playBtn = document.getElementById('play-button');
@@ -10,9 +8,6 @@ const clearPiecesBtn = document.getElementById('clear-pieces');
 const saveBtn = document.getElementById('save-button');
 const loadBtn = document.getElementById('upload-button');
 const autoFillBtn = document.getElementById('autofill-board');
-const tileSlider = document.getElementById('tile-slider');
-const sliderValue = document.getElementById('slider-value');
-const tileCountDisplay = document.getElementById('tile-count');
 
 
 let draggableElements = document.querySelectorAll('.draggable');
@@ -30,7 +25,9 @@ const MAX_TILES = 170;
 let draggedTile = null;
 let tiles = [];
 let pieces = [];
-let highlightElement = null;
+let highlights = [];
+let target = null;
+// target.style.display = 'none';
 
 
 function addTiles(color, count) {
@@ -86,17 +83,6 @@ function autoFillTiles() {
     }
 }
 
-function updateTileCount() {
-    tileCountDisplay.textContent = `Total Tiles: ${tiles.length} / 169`; // this calculation means will need to hardcode value to do later fix caluclation
-}
-
-function updateControls() {
-    const isFull = tiles.length >= MAX_TILES;
-    addWhiteBtn.disabled = isFull;
-    addBlackBtn.disabled = isFull;
-    tileSlider.disabled = isFull;
-}
-
 function findAvailablePosition() {
     for (let y = 0; y < GRID_SIZE; y++) {
         for (let x = 0; x < GRID_SIZE; x++) {
@@ -116,43 +102,17 @@ function clearPieces() {
     pieces = [];
 }
 
-function deleteTile(indexX,indexY){
-    for (let i = 0; i < tiles.length; i++){
-        tile = tiles[i];
-        let x = tile.getAttribute('data-x');
-        let y = tile.getAttribute('data-y');
-        if(x == indexX && y == indexY){
-            deleteIndex = tiles.findIndex((object)=>{
-                return object == tile;
-            });
-
-            if(deleteIndex != -1){
-                tiles.splice(deleteIndex,1);
-            }
-            tile.remove();
-        }
-    }
-}
-
-
-addWhiteBtn.addEventListener('click', () => addTiles('white', parseInt(tileSlider.value)));
-addBlackBtn.addEventListener('click', () => addTiles('black', parseInt(tileSlider.value)));
 clearBoardBtn.addEventListener('click', () => {clearBoard();updateTileCount();updateControls();});
-
-tileSlider.addEventListener('input', () => {
-    sliderValue.textContent = tileSlider.value;
-});
 
 boardArea.addEventListener('dragover', (e) => {
     if(draggedTile){
         e.preventDefault();
-        updateHighlight(e.clientX,e.clientY);
+        const position = pixelToIndex(e.clientX, e.clientY);
+        placeObject(target,position.x,position.y);
+        target.style.display = 'block';
     }
 });
 
-boardArea.addEventListener('dragleave', () => {
-    hideHighlight();
-});
 
 boardArea.addEventListener('drop', (e) => {
     e.preventDefault();
@@ -254,6 +214,5 @@ loadBtn.addEventListener('click', () => {
 });
 
 
-updateTileCount();
-updateControls();
 loadBoardState();
+target = createHighlight(1,1,visible=false);

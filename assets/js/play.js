@@ -12,7 +12,7 @@ const MAX_TILES = 170;
 let draggedTile = null;
 let tiles = [];
 let pieces = [];
-let highlightElement = null;
+let highlights = [];
 let playColor = 'white';
 
 function startTimer() {
@@ -47,7 +47,9 @@ homeBtn.addEventListener('click',()=>{
 boardArea.addEventListener('dragover', (e) => {
     if(draggedTile){
         e.preventDefault();
-        updateHighlight(e.clientX,e.clientY);
+        const position = pixelToIndex(e.clientX, e.clientY);
+        placeObject(target,position.x,position.y);
+        target.style.display = 'block';
     }
 });
 
@@ -88,6 +90,7 @@ boardArea.addEventListener('drop', (e) => {
 
 startTimer();
 loadBoardState();
+let target = createHighlight(1,1,visible=false);
 
 tiles.forEach(tile => {
     tile.draggable = false;

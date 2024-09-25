@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Chess Editor</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="assets/css/styles.css">
     <link rel="stylesheet" href="assets/css/editor.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
@@ -39,8 +40,8 @@
         </div>
 
         <div id="board-area" class="w-[400px] h-[400px] border-2 border-gray-800 relative overflow-hidden mx-auto"></div>
-        <div id="controls" class="mt-4 flex justify-center gap-4">
-            <div id="tile-count" class="mt-4 text-center text-white text-lg font-semibold">Total Tiles: 0/169</div>
+        
+        <div id="placeholder-div">
         </div>
         
         <div id="tile-controls" class="mt-6 flex flex-wrap justify-center gap-4">
@@ -69,12 +70,6 @@
             <button id="autofill-board" class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded">Auto Fill Tiles</button>
             <button id="clear-board" class="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded">Clear Tiles</button>
             
-            <div>
-                <input type="range" id="tile-slider" min="1" max="10" value="1" class="w-48">
-                <span id="slider-value" class="text-lg text-white font-semibold">1</span>
-            </div>
-            <button id="add-white" class="bg-blue-500 text-black font-bold py-2 px-4 rounded">Add White Tiles</button>
-            <button id="add-black" class="bg-gray-800 text-white font-bold py-2 px-4 rounded">Add Black Tiles</button>
         </div>
         
     </div>
